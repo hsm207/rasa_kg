@@ -1,0 +1,88 @@
+version: "2.0"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - inform
+  - terminate_contract
+  - new_contract
+  - buy_device
+
+responses:
+  utter_greet:
+  - text: "Hey! Do you have a question about your mobile or internet contract?"
+    buttons:
+    - title: "mobile contract"
+      payload: '/inform{{"contract_type":"mobile"}}'
+    - title: "internet contract"
+      payload: '/inform{{"contract_type":"internet"}}'
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_ask_rephrase:
+  - text: "I'm sorry, I did not understand that. Can you please rephrase?"
+
+  utter_confirm_purchase:
+  - text: "Okay. Your {device} will be shipped tomorrow."
+
+  utter_handover_internet:
+  - text: "Okay. I will pass you to someone who can answer internet questions"
+
+  utter_clarify_mobile:
+  - text: "What would you like to know about our mobile contracts?"
+
+entities:
+  - device
+  - contract_type
+  - internet_plan
+
+slots:
+  device:
+    type: categorical
+    values:
+      - iphone
+      - samsung
+      - oneplus
+      - galaxy watch
+      - fitbit
+      - linkzone
+
+  contract_type:
+    type: categorical
+    values:
+      - mobile
+      - internet
+  
+  internet_plan:
+    type: categorical
+    values:
+      - max entertainment
+      - max internet
+      - max value
+
+actions:
+  - action_disambiguate_contract
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

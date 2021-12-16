@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  rasa-server:
+    image: rasa-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/app
+    entrypoint: ["sh", "-c", "make run-rasa-server"]
+    ports:
+      - 5005:5005
+    depends_on:
+      - action-server
+      - knowledge-base
+  
+  action-server:
+    image: action-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./actions:/app/actions
+      - ./makefile:/app/makefile
+    entrypoint: ["sh", "-c", "make run-action-server"]
+    ports:
+      - 5678:5678
+  
+  knowledge-base:
+    image: vaticle/typedb:2.5.0
+    volumes: 
+      # - ./kb:/opt/typedb-all-linux/server/data
+      - ./kb:/tmp/kb
+    ports:
+      - 1729:1729

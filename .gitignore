@@ -1,0 +1,7 @@
+.cache
+.config
+.keras
+.vscode-server
+__pycache__
+models
+.bash_history

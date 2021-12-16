@@ -1,0 +1,48 @@
+version: "2.0"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: confirm user's purchase
+  steps:
+  - intent: buy_device
+  - action: utter_confirm_purchase
+
+- rule: user has a question about internet contract
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: inform
+  - action: action_disambiguate_contract
+  - slot_was_set:
+    - contract_type: internet
+  - action: utter_handover_internet
+
+- rule: user has a question about mobile contract
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: inform
+  - action: action_disambiguate_contract
+  - slot_was_set:
+    - contract_type: mobile
+  - action: utter_clarify_mobile
+
+- rule: user has a question about an unknown contract type
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: inform
+  - action: action_disambiguate_contract
+  - slot_was_set:
+    - contract_type: null
+  - action: utter_ask_rephrase

@@ -1,0 +1,41 @@
+database create shop
+transaction shop schema write
+
+  define contract sub relation, relates device, relates plan;
+
+  define name sub attribute, value string;
+
+  define device sub entity, owns name, plays contract:device, abstract;
+  define phone sub device;
+  define smartwatch sub device;
+  define router sub device;
+
+  define plan sub entity, owns name, plays contract:plan, abstract;
+  define internet sub plan;
+  define mobile sub plan;
+
+  commit
+
+transaction shop data write
+
+  insert $p isa phone, has name "iphone";
+  insert $p isa phone, has name "samsung";
+  insert $p isa phone, has name "oneplus";
+
+  insert $p isa smartwatch, has name "galaxy watch";
+  insert $p isa smartwatch, has name "fitbit";
+
+  insert $p isa router, has name "linkzone";
+
+  insert $p isa internet, has name "max entertainment";
+  insert $p isa internet, has name "max internet";
+  insert $p isa internet, has name "max value";
+
+  insert $p isa mobile, has name "start unlimited";
+  insert $p isa mobile, has name "just kids";
+
+  match $d isa phone, has name "iphone";$p isa mobile, has name "start unlimited";insert (device:$d, plan:$p) isa contract;
+  match $d isa phone, has name "samsung";$p isa mobile, has name "just kids";insert (device:$d, plan:$p) isa contract;
+
+  match $d isa router, has name "linkzone";$p isa internet, has name "max internet";insert (device:$d, plan:$p) isa contract;  
+  commit
